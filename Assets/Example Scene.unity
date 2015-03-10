@@ -84,7 +84,7 @@ GameObject:
   - 4: {fileID: 1617689320}
   - 114: {fileID: 1617689319}
   m_Layer: 0
-  m_Name: FactoryInit
+  m_Name: Application
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

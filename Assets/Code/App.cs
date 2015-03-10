@@ -4,16 +4,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
-/// <summary>
-/// This MonoBehavior must be manually added to a GameObject to bootstrap the Factory.
-/// </summary>
-public class FactoryInit : MonoBehaviour
+class App
 {
+    public static App Instance
+    {
+        get;
+        private set;
+    }
+
+    public IFactory Factory
+    {
+        get;
+        private set;
+    }
+
     private ISingletonManager singletonManager;
 
-    void Awake()
+    public static void Startup()
+    {
+        if (Instance == null)
+        {
+            Instance = new App();
+        }        
+    }
+
+    private App()
     {
         var logger = new UnityLogger();
         var factory = new Factory("App", logger);
@@ -21,17 +37,13 @@ public class FactoryInit : MonoBehaviour
 
         factory.AutoRegisterTypes();
         this.singletonManager = factory.AutoInstantiateSingletons();
-
-        // ... can now create objects via the factory ...
+        this.Factory = factory;
+        this.singletonManager.Startup();
     }
 
-    void Start()
-    {
-        singletonManager.Startup();
-    }
-
-    void OnDestroy()
+    public void Shutdown()
     {
         singletonManager.Shutdown();
     }
 }
+
